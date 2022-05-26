@@ -4,13 +4,14 @@
 #include <iostream>
 #include <string>
 
-class Product{
-    public:
+class Product
+{
+public:
     //Constructor
     //
     Product(std::string item_name, int buy_day_date, int buy_month_date,
-    int buy_year_date, int expiration_day_date, int expiration_month_date,
-    int expiration_year_date, double item_quantity);
+            int buy_year_date, int expiration_day_date, int expiration_month_date,
+            int expiration_year_date, int item_quantity, double item_price);
 
     //Destructor
     //
@@ -24,11 +25,12 @@ class Product{
     int get_expiration_day() const;
     int get_expiration_month() const;
     int get_expiration_year() const;
-    double get_quantity() const;
+    int get_quantity() const;
+    double get_price() const;
 
-    Product * get_next();
+    Product *get_next();
 
-    private:
+private:
     std::string name;
     std::string type;
 
@@ -45,10 +47,7 @@ class Product{
 
     int item_id;
 
-
     Product *p_next;
-
-
 };
 
 #endif

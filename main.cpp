@@ -2,6 +2,19 @@
 #include "Shopping_List.hpp"
 #include "Product.hpp"
 
+/*
+下周一 5/30
+Tina:
+
+
+Anthony:
+
+
+Jerry:
+
+
+*/
+
 int main() {
     Shopping_List trans_Shopping_List();
     return 0;
