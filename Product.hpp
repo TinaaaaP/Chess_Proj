@@ -17,6 +17,10 @@ public:
     //
     ~Product();
 
+    //Overload < operator
+	//
+	bool operator<( Product const &other);
+
     std::string get_name() const;
     std::string get_type() const;
     int get_buy_date() const;

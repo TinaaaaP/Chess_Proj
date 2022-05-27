@@ -93,8 +93,34 @@ void Shopping_List::insert(Product *p_new_trans)
 
 ///////////Jerry
 
+bool Product::operator<( Product const &other){
+    if (this->buy_year < other.buy_year){
+    return true;
+  }else if(this->buy_year == other.buy_year){
+    if(this->buy_month < other.buy_month){
+      return true;
+    }else if(this->buy_month == other.buy_month){
+      if(this->buy_day < other.buy_day){
+        return true;
+      }
+    }
+  }
+  return false;
+
+}
+
 void Shopping_List::sort_by_buy_date()
 {
+    //if there is no node or only one node, no change needs to be made
+    if(p_head == nullptr || p_head->get_next() == nullptr){
+        return ;
+    }
+
+    //from the oldest to the newest
+
+    //initialize a pointer points to the head 
+
+    //add the first node of the
 }
 
 void Shopping_List::sort_by_expiration_date()
