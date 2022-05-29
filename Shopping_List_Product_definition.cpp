@@ -115,8 +115,68 @@ bool Product::operator<(Product const &other)
     return false;
 }
 
+//apply merge sort
+Product * merge_sort (Product * list){
+
+    //if there is only one product in the list, no need to sort, return the list
+    if(list->get_next() == nullptr){
+        return list;
+    }
+
+    //else, divide the list into half, shopping_list1 and shopping_list2
+
+    //shopping_list1 = mergesort(shopping_list1)
+    //shopping_list2 = mergesort(shopping_list2)
+
+
+    //Product * head_new = merge(shopping_list1.get_p_head(), shopping_list2.get_p_head())
+
+    //return head_new
+
+    //have not done yet
+    return list;
+
+}
+
+Product * merge (Product * lista, Product * listb){
+
+    /*
+    implement seudo algorithm here:
+
+    Product * listc ;
+
+    while(lista and listb still have elements){
+        if(a[0] < b[0]){
+            append a[0] to c
+            remove a[0] from a
+        }else{
+            append b[0] to c
+            remove b[0] from b
+        }
+    }
+
+    either a or b is empty at this point
+
+    while(lista has element){
+        append a[0] to c
+        remove a[0] from a
+    }
+
+    while(listb has element){
+        append b[0] to c
+        remove b[0] from b
+    }
+
+    if it is linked list, we can directly, it seems that we can directly merge two list
+
+    return the head of listc
+    */
+   return nullptr;
+}
+
 void Shopping_List::sort_by_buy_date()
 {
+    
 }
 
 void Shopping_List::sort_by_expiration_date()
