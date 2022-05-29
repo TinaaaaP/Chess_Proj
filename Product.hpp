@@ -28,7 +28,7 @@ public:
     int get_quantity() const;
     double get_price() const;
 
-    Product *get_next() const;
+    Product *get_next();
 
 private:
     std::string name;

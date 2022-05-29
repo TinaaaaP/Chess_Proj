@@ -4,7 +4,6 @@
 
 #include "Shopping_List.hpp"
 #include "Product.hpp"
-using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions for Product class
@@ -46,7 +45,6 @@ int Product::get_expiration_month() const { return expiration_month; };
 int Product::get_expiration_year() const { return expiration_year; };
 int Product::get_quantity() const { return quantity; };
 double Product::get_price() const { return price; };
-Product *Product::get_next() const { return p_next; };
 
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions for Shopping_List class
@@ -88,12 +86,10 @@ void Shopping_List::read_Shopping_List()
 
 void Shopping_List::insert(Product *p_new_trans)
 {
-    if (p_head == nullptr)
-    { //List is empty
-        p_head = p_new_trans;
-    }
 }
 ///////////////////
+
+
 
 ///////////Jerry
 
@@ -113,7 +109,7 @@ void Shopping_List::sort_by_name()
 }
 ////////////////
 
-///////////////Anthony
+///////////////Anthony 
 void Shopping_List::sort_by_type()
 {
 }
@@ -122,43 +118,10 @@ void Shopping_List::sort_by_type()
 //Apple->3 Cola->2 Orange ->2       <--new list
 //Apple Apple Apple Cola Cola Orange Orange      <--original list
 
+
 //////////////////Anthony
 void Shopping_List::print()
 {
-    while (this->p_head != nullptr)
-    {
-        cout << " Item Name: ";
-        cout << "- " + p_head->get_name();
-        cout << "  Quantity: ";
-        cout << p_head->get_quantity();
-        cout << "  Price: ";
-        cout << p_head->get_price();
-        cout << "  Type: ";
-        cout << p_head->get_type();
-        cout << "   Bought on: ";
-
-        if (p_head->get_buy_year() != -1 && p_head->get_buy_year() != 0)
-        {
-            cout << p_head->get_buy_year();
-            cout << '/';
-            cout << p_head->get_buy_month();
-            cout << '/';
-            cout << p_head->get_buy_date();
-        }
-
-        if (p_head->get_expiration_year() != -1 && p_head->get_expiration_year() != -0)
-        {
-            cout << "Expires on:";
-            cout << p_head->get_expiration_year();
-            cout << '/';
-            cout << p_head->get_expiration_month();
-            cout << '/';
-            cout << p_head->get_expiration_day();
-        }
-
-        p_head = p_head->get_next();
-        cout << endl;
-    }
 }
 
 Product *Shopping_List::get_p_head()
