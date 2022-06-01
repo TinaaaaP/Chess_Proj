@@ -46,6 +46,12 @@ int Product::get_expiration_month() const { return expiration_month; };
 int Product::get_expiration_year() const { return expiration_year; };
 int Product::get_quantity() const { return quantity; };
 double Product::get_price() const { return price; };
+Product * Product::get_next() const {
+    return this->p_next;
+}
+void Product::set_next(Product * next) {
+    this->p_next = next;
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions for Shopping_List class
@@ -115,26 +121,78 @@ bool Product::operator<(Product const &other)
     return false;
 }
 
+bool Product::operator<=(Product const &other)
+{
+    if (this->expiration_year < other.expiration_year)
+    {
+        return true;
+    }
+    else if (this->expiration_year == other.expiration_year)
+    {
+        if (this->expiration_month < other.expiration_month)
+        {
+            return true;
+        }
+        else if (this->expiration_month == other.expiration_month)
+        {
+            if (this->expiration_day < other.expiration_day)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
 //apply merge sort
-Product * merge_sort (Product * list){
+Product * merge (Product * lista, Product * listb);
+Product * merge_exp (Product * lista, Product * listb);
+
+Product * merge_sort (Product * list, bool buy_or_exp){
+    
+    //for buy_or_exp
+    //true: compare buy_date, false:compare expiration_date
 
     //if there is only one product in the list, no need to sort, return the list
     if(list->get_next() == nullptr){
         return list;
     }
 
-    //else, divide the list into half, shopping_list1 and shopping_list2
+    //else, divide the list into half, first_half and second_half
 
-    //shopping_list1 = mergesort(shopping_list1)
-    //shopping_list2 = mergesort(shopping_list2)
+    Product * first_half = list;
+    Product * second_half = nullptr;
+    Product * prev_second_half = nullptr;
+    Product * p_through = list;
 
+    //algorithm that give the address of the head of the saecond half
+    while(p_through != nullptr || p_through->get_next() != nullptr){
+        p_through = p_through -> get_next()->get_next();
+        prev_second_half = second_half;
+        second_half = second_half->get_next();
+    }
 
-    //Product * head_new = merge(shopping_list1.get_p_head(), shopping_list2.get_p_head())
+    //break the first_half with the second_half 
+    //by setting the last one product in the first half point to null
 
-    //return head_new
+    prev_second_half->set_next(nullptr);
 
-    //have not done yet
-    return list;
+    //keep dividing until there isn only one product in each linked list
+
+    Product * head_new = nullptr;
+
+    if(buy_or_exp){
+        first_half = merge_sort(first_half, true);
+        second_half = merge_sort(second_half, true);
+        head_new = merge(first_half, second_half);
+    }else{
+        first_half = merge_sort(first_half, false);
+        second_half = merge_sort(second_half, false);
+        head_new = merge_exp(first_half, second_half);
+    }
+
+    return head_new;
 
 }
 
@@ -171,16 +229,97 @@ Product * merge (Product * lista, Product * listb){
 
     return the head of listc
     */
-   return nullptr;
+
+   Product * listc = nullptr;
+
+   Product * p_through_a = lista;
+   Product * p_through_b = listb;
+   Product * p_through_c = listc;
+
+   while(p_through_a != nullptr && p_through_b != nullptr){
+       if(p_through_a < p_through_b){
+           if(p_through_c == nullptr){
+                p_through_c = p_through_a;
+           }else{
+                p_through_c->set_next(p_through_a);
+                p_through_c = p_through_c->get_next();                
+           }
+           p_through_a = p_through_a -> get_next();
+
+
+       }else{
+           if(p_through_c == nullptr){
+                p_through_c = p_through_b;
+           }else{
+                p_through_c->set_next(p_through_b);
+                p_through_c = p_through_c->get_next(); 
+           }
+           p_through_b = p_through_b -> get_next();
+          
+       }
+   }
+    // if lista is not empty
+    if(p_through_a != nullptr){
+        p_through_c->set_next(p_through_a);
+    }else{
+        p_through_c->set_next(p_through_b);
+    }
+
+   return listc;
+}
+
+Product * merge_exp (Product * lista, Product * listb){
+
+    //same algorithm but for expiration date instead of buy date
+
+   Product * listc = nullptr;
+
+   Product * p_through_a = lista;
+   Product * p_through_b = listb;
+   Product * p_through_c = listc;
+
+   while(p_through_a != nullptr && p_through_b != nullptr){
+       if(p_through_a<=p_through_b){
+           if(p_through_c == nullptr){
+                p_through_c = p_through_a;
+           }else{
+                p_through_c->set_next(p_through_a);
+                p_through_c = p_through_c->get_next();                
+           }
+           p_through_a = p_through_a -> get_next();
+
+
+       }else{
+           if(p_through_c == nullptr){
+                p_through_c = p_through_b;
+           }else{
+                p_through_c->set_next(p_through_b);
+                p_through_c = p_through_c->get_next(); 
+           }
+           p_through_b = p_through_b -> get_next();
+          
+       }
+   }
+    // if lista is not empty
+    if(p_through_a != nullptr){
+        p_through_c->set_next(p_through_a);
+    }else{
+        p_through_c->set_next(p_through_b);
+    }
+
+   return listc;
 }
 
 void Shopping_List::sort_by_buy_date()
 {
-    
+    Product * head_new = merge_sort(this->get_p_head(), true);
+    this->set_head(head_new);
 }
 
 void Shopping_List::sort_by_expiration_date()
 {
+    Product * head_new = merge_sort(this->get_p_head(), false);
+    this->set_head(head_new);
 }
 
 ////////////////////
@@ -242,4 +381,8 @@ void Shopping_List::print()
 Product *Shopping_List::get_p_head()
 {
     return p_head;
+}
+
+void Shopping_List::set_head(Product * new_head){
+    this->p_head = new_head;
 }
