@@ -47,6 +47,7 @@ public:
 	// Product *function_name(); 
 
 private:
+	void set_head(Product * new_head);
 	Product *p_head;
 };
 
