@@ -7,7 +7,8 @@
 
 #include "Product.hpp"
 
-class Shopping_List {
+class Shopping_List
+{
 public:
 	// Constructor
 	//
@@ -29,14 +30,14 @@ public:
 	//
 	void sort_by_buy_date();
 
-    //
-    void sort_by_expiration_date();
-
-    //
-    void sort_by_name();
+	//
+	void sort_by_expiration_date();
 
 	//
-	void sort_by_type();
+	void sort_by_name();
+
+	//
+	Shopping_List* sort_by_type();
 
 	// Print the Product Shopping_List.
 	//
@@ -44,10 +45,10 @@ public:
 
 	Product *get_p_head();
 
-	// Product *function_name(); 
+	// Product *function_name();
 
 private:
-	void set_head(Product * new_head);
+	void set_head(Product *new_head);
 	Product *p_head;
 };
 
