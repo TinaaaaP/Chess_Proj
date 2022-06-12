@@ -19,7 +19,11 @@ public:
 
     // Overloaded < operator.
     //
-    bool operator<( Product const &other );
+    //for buy date
+    bool operator<( Product const &other);
+
+    //for ex[iration date
+    bool operator<=( Product const &other);
 
     std::string get_name() const;
     std::string get_type() const;
@@ -32,7 +36,9 @@ public:
     int get_quantity() const;
     double get_price() const;
 
-    Product *get_next();
+    void set_next(Product * next);
+
+    Product * get_next() const;
 
 private:
     std::string name;
