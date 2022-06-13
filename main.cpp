@@ -16,6 +16,7 @@ Jerry:
 */
 
 int main() {
-    Shopping_List trans_Shopping_List();
+    Shopping_List * list = nullptr;
+    list = Shopping_List();
     return 0;
 }
