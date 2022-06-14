@@ -110,28 +110,28 @@ void Shopping_List::insert(Product *p_new_trans) //at the head of the linked lis
 
 ///////////Jerry
 
-// bool Product::operator<(Product const &other)
-// {
-//     if (this->buy_year < other.buy_year)
-//     {
-//         return true;
-//     }
-//     else if (this->buy_year == other.buy_year)
-//     {
-//         if (this->buy_month < other.buy_month)
-//         {
-//             return true;
-//         }
-//         else if (this->buy_month == other.buy_month)
-//         {
-//             if (this->buy_day < other.buy_day)
-//             {
-//                 return true;
-//             }
-//         }
-//     }
-//     return false;
-// }
+bool Product::operator<(Product const &other)
+{
+    if (this->buy_year < other.buy_year)
+    {
+        return true;
+    }
+    else if (this->buy_year == other.buy_year)
+    {
+        if (this->buy_month < other.buy_month)
+        {
+            return true;
+        }
+        else if (this->buy_month == other.buy_month)
+        {
+            if (this->buy_day < other.buy_day)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 bool Product::operator<=(Product const &other)
 {
