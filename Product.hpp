@@ -17,8 +17,19 @@ public:
     //
     ~Product();
 
-    // Overloaded < operator.
-    //
+    /* Overloaded < operator.
+    
+    If one date is earlier than the other date, then "<" and "<=" will return true, otherwise, return false
+    For example, 
+
+    date1 : 17-June-2022
+    date2 : 18-June-2022
+    date3 : 17-May-2022
+    
+    date1 < date2 would returen true
+    date1 < date3 would return false
+    */
+
     //for buy date
     bool operator < (Product const &other);
 
