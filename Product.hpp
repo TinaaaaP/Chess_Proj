@@ -20,10 +20,31 @@ public:
     // Overloaded < operator.
     //
     //for buy date
-    bool operator<( Product const &other);
+    bool operator < (Product const &other){
+        std::cout << " < working" << std::endl;
+        if (this->buy_year < other.buy_year)
+    {
+        return true;
+    }
+    else if (this->buy_year == other.buy_year)
+    {
+        if (this->buy_month < other.buy_month)
+        {
+            return true;
+        }
+        else if (this->buy_month == other.buy_month)
+        {
+            if (this->buy_day < other.buy_day)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+    }
 
-    //for ex[iration date
-    bool operator<=( Product const &other);
+    //for expiration date
+    bool operator <= ( Product const &other);
 
     std::string get_name() const;
     std::string get_type() const;

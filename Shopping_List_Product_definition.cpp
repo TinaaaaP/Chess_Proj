@@ -110,28 +110,28 @@ void Shopping_List::insert(Product *p_new_trans) //at the head of the linked lis
 
 ///////////Jerry
 
-bool Product::operator<(Product const &other)
-{
-    if (this->buy_year < other.buy_year)
-    {
-        return true;
-    }
-    else if (this->buy_year == other.buy_year)
-    {
-        if (this->buy_month < other.buy_month)
-        {
-            return true;
-        }
-        else if (this->buy_month == other.buy_month)
-        {
-            if (this->buy_day < other.buy_day)
-            {
-                return true;
-            }
-        }
-    }
-    return false;
-}
+// bool Product::operator<(Product const &other)
+// {
+//     if (this->buy_year < other.buy_year)
+//     {
+//         return true;
+//     }
+//     else if (this->buy_year == other.buy_year)
+//     {
+//         if (this->buy_month < other.buy_month)
+//         {
+//             return true;
+//         }
+//         else if (this->buy_month == other.buy_month)
+//         {
+//             if (this->buy_day < other.buy_day)
+//             {
+//                 return true;
+//             }
+//         }
+//     }
+//     return false;
+// }
 
 bool Product::operator<=(Product const &other)
 {
@@ -167,24 +167,30 @@ Product *merge_sort(Product *list, bool buy_or_exp)
     //true: compare buy_date, false:compare expiration_date
 
     //if there is only one product in the list, no need to sort, return the list
+
+    Shopping_List *my_list = new Shopping_List();
+
     if (list->get_next() == nullptr)
     {
         return list;
     }
 
+
     //else, divide the list into half, first_half and second_half
 
     Product *first_half = list;
-    Product *second_half = nullptr;
+    Product *second_half = list;
     Product *prev_second_half = nullptr;
     Product *p_through = list;
 
+    
     //algorithm that give the address of the head of the saecond half
-    while (p_through != nullptr || p_through->get_next() != nullptr)
+    while (p_through != nullptr && p_through->get_next() != nullptr)
     {
         p_through = p_through->get_next()->get_next();
         prev_second_half = second_half;
         second_half = second_half->get_next();
+
     }
 
     //break the first_half with the second_half
@@ -194,6 +200,7 @@ Product *merge_sort(Product *list, bool buy_or_exp)
 
     //keep dividing until there isn only one product in each linked list
 
+
     Product *head_new = nullptr;
 
     if (buy_or_exp)
@@ -201,6 +208,11 @@ Product *merge_sort(Product *list, bool buy_or_exp)
         first_half = merge_sort(first_half, true);
         second_half = merge_sort(second_half, true);
         head_new = merge(first_half, second_half);
+
+        // my_list->set_head(head_new);
+        // my_list->print();
+        // std::cout << std::endl;
+
     }
     else
     {
@@ -253,13 +265,21 @@ Product *merge(Product *lista, Product *listb)
     Product *p_through_b = listb;
     Product *p_through_c = listc;
 
+    std::cout << "merge works here" << std::endl;
+
     while (p_through_a != nullptr && p_through_b != nullptr)
     {
-        if (p_through_a < p_through_b)
+        std::cout << p_through_a->get_buy_year() << "/" << p_through_a->get_buy_month() << "/" << p_through_a->get_buy_date();
+        std::cout << " compare with " << p_through_b->get_buy_year() << "/" << p_through_b->get_buy_month() << "/" << p_through_b->get_buy_date();
+        std::cout << std::endl;
+        std::cout << "compare result: " << (p_through_a < p_through_b) << std::endl; 
+
+        if (*p_through_a < *p_through_b)
         {
             if (p_through_c == nullptr)
             {
                 p_through_c = p_through_a;
+                listc = p_through_a;
             }
             else
             {
@@ -273,6 +293,7 @@ Product *merge(Product *lista, Product *listb)
             if (p_through_c == nullptr)
             {
                 p_through_c = p_through_b;
+                listc = p_through_b;
             }
             else
             {
@@ -308,11 +329,12 @@ Product *merge_exp(Product *lista, Product *listb)
 
     while (p_through_a != nullptr && p_through_b != nullptr)
     {
-        if (p_through_a <= p_through_b)
+        if (*p_through_a <= *p_through_b)
         {
             if (p_through_c == nullptr)
             {
                 p_through_c = p_through_a;
+                listc = p_through_a;
             }
             else
             {
@@ -326,6 +348,7 @@ Product *merge_exp(Product *lista, Product *listb)
             if (p_through_c == nullptr)
             {
                 p_through_c = p_through_b;
+                listc = p_through_b;
             }
             else
             {
@@ -350,6 +373,7 @@ Product *merge_exp(Product *lista, Product *listb)
 
 void Shopping_List::sort_by_buy_date()
 {
+    std::cout << "p0" << std::endl;
     Product *head_new = merge_sort(this->get_p_head(), true);
     this->set_head(head_new);
 }
@@ -378,8 +402,8 @@ Shopping_List* Shopping_List::sort_by_type()
 
     Shopping_List *grouped_by_type_list = new Shopping_List;
 
-    int quantity_count {};
-    double total_price {};
+    int quantity_count;
+    double total_price;
 
     while(p_traverse_back != nullptr && p_traverse_front != nullptr){
 
