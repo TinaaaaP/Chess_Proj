@@ -1,6 +1,8 @@
 #include <cassert>
 #include <iomanip>
 #include <iostream>
+#include <algorithm> 
+#include <cmath>
 
 #include "Shopping_List.hpp"
 #include "Product.hpp"
@@ -156,11 +158,13 @@ bool Product::operator<=(Product const &other)
     return false;
 }
 
+
 //apply merge sort
 Product *merge(Product *lista, Product *listb);
 Product *merge_exp(Product *lista, Product *listb);
+Product *merge_name(Product *lista, Product *listb);
 
-Product *merge_sort(Product *list, bool buy_or_exp)
+Product *merge_sort(Product *list, string func_type)
 {
 
     //for buy_or_exp
@@ -203,10 +207,10 @@ Product *merge_sort(Product *list, bool buy_or_exp)
 
     Product *head_new = nullptr;
 
-    if (buy_or_exp)
+    if (func_type == "buy")
     {
-        first_half = merge_sort(first_half, true);
-        second_half = merge_sort(second_half, true);
+        first_half = merge_sort(first_half, "buy");
+        second_half = merge_sort(second_half, "buy");
         head_new = merge(first_half, second_half);
 
         // my_list->set_head(head_new);
@@ -214,11 +218,17 @@ Product *merge_sort(Product *list, bool buy_or_exp)
         // std::cout << std::endl;
 
     }
-    else
+    else if (func_type == "expire")
     {
-        first_half = merge_sort(first_half, false);
-        second_half = merge_sort(second_half, false);
+        first_half = merge_sort(first_half, "expire");
+        second_half = merge_sort(second_half, "expire");
         head_new = merge_exp(first_half, second_half);
+    } 
+    else if (func_type == "name") 
+    {
+        first_half = merge_sort(first_half, "name");
+        second_half = merge_sort(second_half, "name");
+        head_new = merge_name(first_half, second_half);
     }
 
     return head_new;
@@ -371,24 +381,118 @@ Product *merge_exp(Product *lista, Product *listb)
     return listc;
 }
 
+
+
 void Shopping_List::sort_by_buy_date()
 {
     std::cout << "p0" << std::endl;
-    Product *head_new = merge_sort(this->get_p_head(), true);
+    Product *head_new = merge_sort(this->get_p_head(), "buy");
     this->set_head(head_new);
 }
 
 void Shopping_List::sort_by_expiration_date()
 {
-    Product *head_new = merge_sort(this->get_p_head(), false);
+    Product *head_new = merge_sort(this->get_p_head(), "expire");
     this->set_head(head_new);
 }
+
 
 ////////////////////
 
 ///////////////Tina
 void Shopping_List::sort_by_name()
 {
+    Product *head_new = merge_sort(this->get_p_head(), "name");
+    this->set_head(head_new);
+}
+
+bool Product::operator%(Product const &other)
+{
+    std::string str1 = this->name;
+    std::string str2 = other.name;
+
+    std::string str1new = "";
+    std::string str2new = "";
+    for (int i = 0; i < str1.length(); i++){
+        if (65 <= str1[i] && str1[i] <= 90){
+            str1new += char(str1[i] + 32);
+        } else if (str1[i] <= 66|| (91 <= str1[i] && str1[i] <= 96) || str1[i] >= 123){
+            str1new += char(0);
+        } else {
+            str1new += str1[i];
+        }
+    }
+    for (int i = 0; i < str2.length(); i++){
+        if (65 <= str2[i] && str2[i] <= 90){
+            str2new += char(str2[i] + 32);
+        } else if (str2[i] <= 66|| (91 <= str2[i] && str2[i] <= 96) || str2[i] >= 123){
+            str2new += char(0);
+        } else {
+            str2new += str2[i];
+        }
+    }
+    int len = std::min(str1new.length(), str2new.length());
+    int str1int = 0;
+    int str2int = 0;
+    for (int i = len; i > 0; i--){
+        str1int += (str1new[len-i]-96)*pow(26,i);
+        str2int += (str2new[len-i]-96)*pow(26,i);
+    }
+    return (str1int < str2int);
+}
+
+Product *merge_name(Product *lista, Product *listb){
+
+    //same algorithm but for expiration date instead of buy date
+
+    Product *listc = nullptr;
+
+    Product *p_through_a = lista;
+    Product *p_through_b = listb;
+    Product *p_through_c = listc;
+
+    while (p_through_a != nullptr && p_through_b != nullptr)
+    {
+        if (*p_through_a % *p_through_b)
+        {
+            if (p_through_c == nullptr)
+            {
+                p_through_c = p_through_a;
+                listc = p_through_a;
+            }
+            else
+            {
+                p_through_c->set_next(p_through_a);
+                p_through_c = p_through_c->get_next();
+            }
+            p_through_a = p_through_a->get_next();
+        }
+        else
+        {
+            if (p_through_c == nullptr)
+            {
+                p_through_c = p_through_b;
+                listc = p_through_b;
+            }
+            else
+            {
+                p_through_c->set_next(p_through_b);
+                p_through_c = p_through_c->get_next();
+            }
+            p_through_b = p_through_b->get_next();
+        }
+    }
+    // if lista is not empty
+    if (p_through_a != nullptr)
+    {
+        p_through_c->set_next(p_through_a);
+    }
+    else
+    {
+        p_through_c->set_next(p_through_b);
+    }
+
+    return listc;
 }
 ////////////////
 
