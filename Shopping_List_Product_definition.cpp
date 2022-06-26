@@ -535,7 +535,11 @@ void Shopping_List::print()
 {
     Product *temp_head = this->p_head;
     
-
+    if (temp_head == nullptr){
+        cout << "Empty List" << endl;
+        return;
+    }
+    
     while (temp_head != nullptr)
     {
         cout << " Item Name: ";

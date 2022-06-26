@@ -39,8 +39,185 @@ bool program_running = true;
 
 while (program_running)
 {
+
+    // file reader? 
+
+    Shopping_List *newList = new Shopping_List();
     std::cout << "User Menu:" << std::endl;
-    std::cout << "[I]: insert" << std::endl;
+    std::cout << "[I]: insert   [S]: sort   [P]: print  [C]: clear   [Q]: quit" << std::endl;
+    char menuInput;
+    std::cin >> menuInput;
+    switch (menuInput){
+        // insert
+        case 'I':
+        case 'i':{
+            bool entering = true;
+            std::string item_name;
+            int buy_day_date; int buy_month_date; int buy_year_date;
+            int expiration_day_date; int expiration_month_date; int expiration_year_date;
+            int item_quantity;
+            double item_price;
+            while (entering){
+                std::cout << "Enter name : " << std::endl;
+                std::cin >> item_name;
+                std::cout << "Enter buy date : [T]: use today's date    [M]: enter date manually" << std::endl;
+                char buyDateOption;
+                std::cin >> buyDateOption;
+                if (buyDateOption == 'T' || buyDateOption == 't') {
+                    
+                    // get current time
+
+                } else if (buyDateOption == 'M' || buyDateOption == 'm') {
+                    std::cout << "Please enter buy date as (yyyy mm dd)" << std::endl;
+                    std::cin >> buy_year_date >> buy_month_date >> buy_day_date;
+
+                    // add constraints to date
+
+                } else {
+                    std::cout << "Invalid Input" << std::endl;
+                    continue;
+                }
+                std::cout << "Enter expiration date as (yyyy mm dd)" << std::endl;
+                std::cin >> expiration_year_date >> expiration_month_date >> expiration_day_date;
+
+                // add constraints to date
+
+                std::cout << "Enter quantity" << std::endl;
+                std::cin >> item_quantity;
+
+                // add unit?/conversion?
+
+                std::cout << "Enter price" << std::endl;
+                std::cin >> item_price;
+
+                // add unit?/conversion?
+
+                entering = false;
+            }
+            Product *input = new Product(item_name, buy_day_date, buy_month_date, buy_year_date, expiration_day_date, expiration_month_date, expiration_year_date, item_quantity, item_price);
+            std::cout << item_name;
+            
+            // add detailed error handling
+
+            // try {
+                newList->insert(input);
+            //     std::string error = "error";
+            //     throw error; 
+            // }
+            // catch (string error) {
+            //     std::cout << error << " Please retry" << std::endl;
+            //     continue;
+            // }
+            break;
+        }
+        // sort
+        case 's':
+        case 'S':{
+            std::cout << "Sort by: [N]: name  [T]: type  [B]: buy date [E]: expiry date" << std::endl;
+            char sortType;
+            std::cin >> sortType;
+            bool sorting = true;
+            while (sorting){
+                switch (sortType){
+                    case 'n':
+                    case 'N':{
+                        std::cout << "Sorting by name........" << std::endl;
+                        try {
+                            newList->sort_by_name();
+                            sorting = false;
+                            std::string error = "error";
+                            throw error; 
+                        }
+                        catch (string error) {
+                            std::cout << error << " Please retry" << std::endl;
+                            continue;
+                        }
+                        break;
+                    }
+                    case 't':
+                    case 'T':{
+                        std::cout << "Sorting by type........" << std::endl;
+                        try {
+                            newList->sort_by_type();
+                            sorting = false;
+                            std::string error = "error";
+                            throw error; 
+                        }
+                        catch (string error) {
+                            std::cout << error << " Please retry" << std::endl;
+                            continue;
+                        }
+                        break;
+                    }
+                    case 'b':
+                    case 'B':{
+                        std::cout << "Sorting by buy date........" << std::endl;
+                        try {
+                            newList->sort_by_buy_date();
+                            sorting = false;
+                            std::string error = "error";
+                            throw error; 
+                        }
+                        catch (string error) {
+                            std::cout << error << " Please retry" << std::endl;
+                            continue;
+                        }
+                        break;
+                    }
+                    case 'e':
+                    case 'E':{
+                        std::cout << "Sorting by expiry date........" << std::endl;
+                        try {
+                            newList->sort_by_expiration_date();
+                            sorting = false;
+                            std::string error = "error";
+                            throw error; 
+                        }
+                        catch (string error) {
+                            std::cout << error << " Please retry" << std::endl;
+                            continue;
+                        }
+                        break;
+                    }
+                    default:{
+                        std::cout << "Error: please retry" << std::endl;
+                        continue;
+                    }
+                }
+            }
+            std::cout << "List sorted." << std::endl;
+            break;
+        }
+        // print
+        case 'p':
+        case 'P':{
+            newList->print(); 
+            break;
+        }
+        // clear
+        case 'c':
+        case 'C':{
+            delete newList;
+            Shopping_List *newList = new Shopping_List();
+            break;
+        }
+        // quit
+        case 'q':
+        case 'Q':{
+            program_running = false;
+            std::cout << "Thanks for using." << std::endl;
+            delete newList;
+            
+            // document handling
+
+            break;
+        }
+        // invalid input
+        default:{
+            std::cout << "Invalid Input." << std::endl;
+            break;
+        }
+    }
 }
 
 
